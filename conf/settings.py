@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     # local
     'frontend.apps.FrontendConfig',
     'recipes.apps.RecipesConfig',
+    'api.apps.ApiConfig',
 ]
 
 MIDDLEWARE = [
