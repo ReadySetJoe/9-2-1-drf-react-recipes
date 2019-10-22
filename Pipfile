@@ -11,6 +11,8 @@ gunicorn = "*"
 whitenoise = "*"
 dj-database-url = "*"
 psycopg2-binary = "*"
+pillow = "*"
+djangorestframework = "*"
 
 [requires]
 python_version = "3.7"
