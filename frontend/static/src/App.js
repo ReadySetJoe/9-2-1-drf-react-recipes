@@ -94,7 +94,7 @@ class App extends React.Component {
               Title: <input type='text' name='title' value={this.state.title} onChange={this.handleChange}/><br/><br/>
               Image: <input type='file' name='image' onChange={this.handleImageChange}/><br/><br/>
               {this.state.image ? (
-                <img src={this.state.preview} alt='preview'/>
+                <img src={this.state.preview} alt='preview' width="200"/>
               ) : (
                 null
               )}

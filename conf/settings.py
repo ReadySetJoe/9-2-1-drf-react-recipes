@@ -136,3 +136,14 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'frontend/static/build/static'),)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# UPLOADED FILE CONFIGURATION
+#  SEE: https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_ACCESS_KEY_ID = os.environ['aws_access_key_id']
+AWS_SECRET_ACCESS_KEY = os.environ['aws_secret_access_key']
+AWS_STORAGE_BUCKET_NAME = 'ccs-drf-react-recipes-readysetjoe'
+AWS_DEFAULT_ACL = None
+# # default will be to lock down
+AWS_S3_FILE_OVERWRITE = False
+# true is defult and will overwrite file names. Set to FALSE for files to upload and add numbers to the end of file to add repeats.
