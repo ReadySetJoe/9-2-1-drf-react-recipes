@@ -44,18 +44,29 @@ class Login extends React.Component {
   }
 
   render () {
-    let form = null
-    if (this.state.loggedIn) {
-      return <p>Hello, {this.state.username}</p>
-    } else {
-      return (
-        <form onSubmit={this.handleSubmit}>
-          <input type='text' name='username' value={this.state.username} onChange={this.handleChange}/><br/>
-          <input type='password' name='password' value={this.state.password} onChange={this.handleChange}/><br/>
-          <button>Log in</button>
-        </form>
-      )
-    }
+    return (
+      <>
+        <div className="card">
+          <article className="card-body">
+            <h4 className="card-title mb-4 mt-1">Sign in</h4>
+            <form>
+              <div className="form-group">
+                <label>Your email</label>
+                  <input name="" className="form-control" placeholder="Email" type="email"/>
+              </div> 
+              <div className="form-group">
+                <label>Your password</label>
+                  <input className="form-control" placeholder="******" type="password"/>
+              </div>  
+              <div className="form-group">
+                  <button type="submit" className="btn btn-primary btn-block"> Login  </button>
+                  <a href="" className="btn btn-outline-primary btn-block">Sign up</a>
+              </div>                                                            
+            </form>
+          </article>
+        </div>
+      </>
+    )
   }
 }
 
