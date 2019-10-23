@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import './App.css';
+import Login from './Login';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -77,9 +78,10 @@ class App extends React.Component {
 
   render() {
     let recipes = this.state.recipes.map(recipe => (
-      <li key={recipe.id}>
-        <p>{recipe.title}</p> by <p>{recipe.created_by}</p>
-        <img src={recipe.image} alt={recipe.title} width="200"/>
+      <li key={recipe.id} className='recipe-li'>
+        <p>{recipe.title}</p> by <p>{recipe.created_by}</p><br/>
+        <img src={recipe.image} alt={recipe.title} width="200" className='recipe-img'/>
+        <button onClick={this.handleDelete} className='del-btn'>x</button>
       </li>
     ));
     return (
@@ -87,6 +89,7 @@ class App extends React.Component {
         <div className="App">
           <header className="App-header">
             Hello, world!
+            <Login />
             <br/><br/><br/>
             <form onSubmit={this.handleSubmit}>
               Image Upload
@@ -101,9 +104,9 @@ class App extends React.Component {
               
               <button>Upload</button>
             </form>
-            <ul>
+            <ol>
               {recipes}
-            </ul>
+            </ol>
           </header>
         </div>
       </React.Fragment>
