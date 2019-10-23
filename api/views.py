@@ -1,8 +1,8 @@
-from django.shortcuts import render
 from rest_framework import generics
+
 from recipes.models import Recipe
-from .serializers import RecipeSerializer
 from .permissions import IsOwnerOrReadOnly
+from .serializers import RecipeSerializer
 
 
 class RecipeListCreateAPIView(generics.ListCreateAPIView):

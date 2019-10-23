@@ -18,6 +18,7 @@ class App extends React.Component {
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
     this.handleImageChange = this.handleImageChange.bind(this);
 
   }
@@ -52,6 +53,7 @@ class App extends React.Component {
         title: '',
         image: null,
         preview: '',
+        recipes: recipes,
       })
     })
     .catch(error => {
@@ -75,20 +77,33 @@ class App extends React.Component {
     reader.readAsDataURL(file);
   }
 
+  handleDelete(recipe) {
+    axios.delete(`/api/v1/recipes/${recipe.id}/`)
+    .then(res => {
+      console.log(res)
+      let recipes = [...this.state.recipes]
+      let ndx = recipes.indexOf(recipe)
+      recipes = recipes.splice(ndx) 
+      this.setState({recipes})
+    })
+    .catch(error => {
+      console.log(error)
+    })
+  }
+
 
   render() {
     let recipes = this.state.recipes.map(recipe => (
       <li key={recipe.id} className='recipe-li'>
         <p>{recipe.title}</p> by <p>{recipe.created_by}</p><br/>
         <img src={recipe.image} alt={recipe.title} width="200" className='recipe-img'/>
-        <button onClick={this.handleDelete} className='del-btn'>x</button>
+        <button onClick={() => this.handleDelete(recipe)} className='del-btn'>x</button>
       </li>
     ));
     return (
       <React.Fragment>
         <div className="App">
           <header className="App-header">
-            Hello, world!
             <Login />
             <br/><br/><br/>
             <form onSubmit={this.handleSubmit}>
