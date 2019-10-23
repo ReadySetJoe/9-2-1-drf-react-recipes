@@ -49,6 +49,14 @@ INSTALLED_APPS = [
     'api.apps.ApiConfig',
 ]
 
+# Endpoint access default is authenticated user
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+        # 'rest_framework.permissions.AllowAny', # default
+    ]
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
