@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import './App.css';
 import Login from './Login';
+import Create from './Create';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -10,20 +11,16 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: '',
-      image: null,
-      preview: '',
       recipes: [],
+      // username: '',
     }
 
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
-    this.handleImageChange = this.handleImageChange.bind(this);
-
   }
 
   componentDidMount() {
+    localStorage.setItem('my-app-key',null);
     axios.get('/api/v1/recipes/')
     .then(res => {
       this.setState({recipes:res.data});
@@ -31,30 +28,9 @@ class App extends React.Component {
     .catch(error => {
       console.log(error)
     })
-  }
-
-  handleSubmit(e) {
-    e.preventDefault();
-
-    let formData = new FormData();
-    formData.append('title', this.state.title);
-    formData.append('image', this.state.image);
-
-    axios.post('/api/v1/recipes/', formData, {
-      headers: {
-        'content-type': 'multipart/form-data'
-      }
-    })
+    axios.get('/api/v1/rest-auth/user/')
     .then(res => {
-      let recipes = [...this.state.recipes];
-      recipes.push(res.data);
-
-      this.setState({
-        title: '',
-        image: null,
-        preview: '',
-        recipes: recipes,
-      })
+      this.setState({username:res.username});
     })
     .catch(error => {
       console.log(error)
@@ -63,18 +39,6 @@ class App extends React.Component {
 
   handleChange(e) {
     this.setState({[e.target.name]: e.target.value});
-  }
-
-  handleImageChange(e) {
-    let file = e.target.files[0];
-    this.setState({image: file});
-    
-    let reader = new FileReader();
-    reader.onloadend = () => {
-      this.setState({preview: reader.result})
-    };
-
-    reader.readAsDataURL(file);
   }
 
   handleDelete(recipe) {
@@ -105,9 +69,10 @@ class App extends React.Component {
 
           <header className='d-flex justify-content-between align-items-center border-bottom'>
             <i>The kitchen is yours, chef!</i>
+            {/* <i>The kitchen is yours, chef{' '.concat(this.state.username)}!</i> */}
             <a href="/"><h1 className='text-uppercase'>Batch Maker</h1></a>
               <div className='user-actions'>
-                <li>+</li>
+                <li><Create/></li>
                 <li><Login/></li>
               </div>
           </header>

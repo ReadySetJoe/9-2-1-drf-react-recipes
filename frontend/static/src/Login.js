@@ -16,12 +16,11 @@ class Login extends React.Component {
       showLogin: false,
     };
 
-    this.handleSignUpSubmit = this.handleSignUpSubmit.bind(this);
+    this.handleSignUp = this.handleSignUp.bind(this);
     this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleShowLogin = this.handleShowLogin.bind(this);
     this.handleHideLogin = this.handleHideLogin.bind(this);
-    
   }
 
   handleLoginSubmit = (e) => {
@@ -43,7 +42,7 @@ class Login extends React.Component {
     })
   }
 
-  handleSignUpSubmit = (e) => {
+  handleSignUp = (e) => {
 
     e.preventDefault();
 
@@ -61,7 +60,18 @@ class Login extends React.Component {
   }
 
   handleShowLogin(e) {
-    this.setState({showLogin: true})
+    if (this.state.loggedIn) {
+      axios.post('api/v1/rest-auth/logout/')
+      .then(res => {
+        localStorage.setItem('my-app-key',null);
+        this.setState({loggedIn: false})
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    } else {
+      this.setState({showLogin: true})
+    }
   }
 
   handleHideLogin(e) {
@@ -86,8 +96,10 @@ class Login extends React.Component {
               <input onChange={this.handleChange} type="password" placeholder="Enter Password" name="password" required/>
 
               <button type="submit">Login</button>
+              <button type="button" onClick={() => (this.handleSignUp)}>Sign Up</button>
+              
               <label>
-                <input onChange={this.handleChange} type="checkbox" checked="checked" name="remember"/> Remember me
+                <input onChange={this.handleChange} type="checkbox" name="remember"/> Remember me
               </label>
             </div>
 
@@ -100,7 +112,7 @@ class Login extends React.Component {
     }    
     return (
       <>
-      <button onClick={this.handleShowLogin} className="logon-btn">{this.state.loggedIn ? "My Account" : "Login"}</button>
+      <button onClick={this.handleShowLogin} className="logon-btn">{this.state.loggedIn ? "Logout" : "Login"}</button>
       {modal}
       </>
     )
