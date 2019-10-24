@@ -102,28 +102,42 @@ class App extends React.Component {
     ));
     return (
       <React.Fragment>
-        <div className="App">
-          <header className="App-header">
-            <Login />
-            <br/><br/><br/>
-            <form onSubmit={this.handleSubmit}>
-              Image Upload
-              <br/><br/>
-              Title: <input type='text' name='title' value={this.state.title} onChange={this.handleChange}/><br/><br/>
-              Image: <input type='file' name='image' onChange={this.handleImageChange}/><br/><br/>
-              {this.state.image ? (
-                <img src={this.state.preview} alt='preview' width="200"/>
-              ) : (
-                null
-              )}
-              
-              <button>Upload</button>
-            </form>
-            <ol>
-              {recipes}
-            </ol>
+
+          <header className='d-flex justify-content-between align-items-center border-bottom'>
+            <i>The kitchen is yours, chef!</i>
+            <a href="/"><h1 className='text-uppercase'>Batch Maker</h1></a>
+              <div className='user-actions'>
+                <li>+</li>
+                <li><Login/></li>
+              </div>
           </header>
+
+        <div className='container'>
+          <div className='row'>
+
+            <nav className='d-none d-md-flex col-3 flex-column border-right'>
+              <div>My Recipes</div>
+              <div>Public Recipes</div>
+              {/* <div>Popular Recipes</div> */}
+              <div>My Favorite Recipes</div>
+              {/* <div>My Pantry</div> */}
+            </nav>
+
+            <div className='col-9'>
+              <div>My Recipes
+                <ul>
+                  {recipes}
+                </ul>
+              </div>
+              <div>Public Recipes</div>
+              {/* <div>Popular Recipes</div> */}
+              <div>My Favorite Recipes</div>
+              {/* <div>My Pantry</div> */}
+
+            </div>
+          </div>
         </div>
+
       </React.Fragment>
     );
   }

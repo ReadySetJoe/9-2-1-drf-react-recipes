@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import './App.css';
+import './Login.css';
 
 
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -13,13 +13,18 @@ class Login extends React.Component {
       username: '',
       password: '',
       loggedIn: false,
+      showLogin: false,
     };
 
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSignUpSubmit = this.handleSignUpSubmit.bind(this);
+    this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleShowLogin = this.handleShowLogin.bind(this);
+    this.handleHideLogin = this.handleHideLogin.bind(this);
+    
   }
 
-  handleSubmit = (e) => {
+  handleLoginSubmit = (e) => {
     e.preventDefault();
 
     let user = {
@@ -31,40 +36,72 @@ class Login extends React.Component {
     .then(res => {
       console.log(res);
       localStorage.setItem('my-app-key',res.data.key);
-      this.setState({loggedIn: true})
+      this.setState({loggedIn: true, showLogin: false})
     })
     .catch(error => {
       console.log(error)
     })
+  }
 
+  handleSignUpSubmit = (e) => {
+
+    e.preventDefault();
+
+    axios.post('api/v1/rest-auth/registration/')
+    .then(res => {
+      console.log(res);
+    })
+    .catch(error => {
+      console.log(error)
+    })    
   }
 
   handleChange(e) {
     this.setState({[e.target.name]: e.target.value});
   }
 
+  handleShowLogin(e) {
+    this.setState({showLogin: true})
+  }
+
+  handleHideLogin(e) {
+    this.setState({showLogin: false})
+  }
+
   render () {
+    let modal = null;
+    if (this.state.showLogin) {
+      modal = 
+        <div className={this.state.showLogin ? "modal-selected" : "modal"}>
+          <form className="modal-content animate" onSubmit={this.handleLoginSubmit} method="post">
+            <div className="imgcontainer">
+              <span onClick={this.handleHideLogin} className="close" title="Close Modal">&times;</span>
+            </div>
+
+            <div className="container">
+              <label htmlFor="username"><b>Username</b></label>
+              <input onChange={this.handleChange} type="text" placeholder="Enter Username" name="username" required/>
+
+              <label htmlFor="password"><b>Password</b></label>
+              <input onChange={this.handleChange} type="password" placeholder="Enter Password" name="password" required/>
+
+              <button type="submit">Login</button>
+              <label>
+                <input onChange={this.handleChange} type="checkbox" checked="checked" name="remember"/> Remember me
+              </label>
+            </div>
+
+            <div className="container" style={{backgroundColor:'#f1f1f1'}}>
+              <button type="button" onClick={this.handleHideLogin} className="cancelbtn">Cancel</button>
+              <span className="psw">Forgot <a href="/accounts/password_reset">password?</a></span>
+            </div>
+          </form>
+        </div>
+    }    
     return (
       <>
-        <div className="card">
-          <article className="card-body">
-            <h4 className="card-title mb-4 mt-1">Sign in</h4>
-            <form>
-              <div className="form-group">
-                <label>Your email</label>
-                  <input name="" className="form-control" placeholder="Email" type="email"/>
-              </div> 
-              <div className="form-group">
-                <label>Your password</label>
-                  <input className="form-control" placeholder="******" type="password"/>
-              </div>  
-              <div className="form-group">
-                  <button type="submit" className="btn btn-primary btn-block"> Login  </button>
-                  <a href="" className="btn btn-outline-primary btn-block">Sign up</a>
-              </div>                                                            
-            </form>
-          </article>
-        </div>
+      <button onClick={this.handleShowLogin} className="logon-btn">{this.state.loggedIn ? "My Account" : "Login"}</button>
+      {modal}
       </>
     )
   }

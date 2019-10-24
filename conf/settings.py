@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'frontend.apps.FrontendConfig',
     'recipes.apps.RecipesConfig',
     'api.apps.ApiConfig',
+    'accounts.apps.AccountsConfig',
 ]
 
 # Endpoint access default is authenticated user
@@ -73,7 +74,7 @@ ROOT_URLCONF = 'conf.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -157,3 +158,5 @@ AWS_DEFAULT_ACL = None
 # # default will be to lock down
 AWS_S3_FILE_OVERWRITE = False
 # true is defult and will overwrite file names. Set to FALSE for files to upload and add numbers to the end of file to add repeats.
+
+LOGIN_REDIRECT_URL = '/'
