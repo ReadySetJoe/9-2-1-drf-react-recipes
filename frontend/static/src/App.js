@@ -50,9 +50,8 @@ class App extends React.Component {
     })
   }
 
-
-  render() {
-    let recipes = this.state.recipes.map(recipe => (
+  makeRow(recipes) {
+    return recipes.map(recipe => (
       <li key={recipe.id} className='recipe-li m-2'>
         {/* <p>{recipe.title}</p> by <p>{recipe.created_by}</p><br/> */}
         <div className='recipe-img' style={{backgroundImage: `url(${recipe.image})`}}>
@@ -61,7 +60,22 @@ class App extends React.Component {
         <button onClick={() => this.handleDelete(recipe)} className='del-btn'>x</button>
       </li>
     ));
+  }
 
+
+  render() {
+    let recipes = [...this.state.recipes]
+    let my_recipes = [...this.state.recipes].filter(recipe => recipe) // still need to implement 'custom auth token'
+    let public_recipes = [...this.state.recipes].filter(recipe => !recipe.private)
+    let popular_recipes = [...this.state.recipes].filter(recipe => recipe) // still need to implement 'favorites list'
+    let favorite_recipes = [...this.state.recipes].filter(recipe => recipe) // still need to implement 'favorites list'
+
+    recipes = this.makeRow(recipes)
+    my_recipes = this.makeRow(public_recipes)
+    public_recipes = this.makeRow(public_recipes)
+    popular_recipes = this.makeRow(popular_recipes)
+    favorite_recipes = this.makeRow(favorite_recipes)
+    
     return (
       <React.Fragment>
 
@@ -78,28 +92,65 @@ class App extends React.Component {
 
         <div className='container'>
           <div className='row'>
-            <nav className='d-none d-md-flex col-3 flex-column border-right align-items-center justify-content-around'>
-              <div className='border-bottom p-4'>Public Recipes</div>
-              <div className='border-bottom p-4'>Popular Recipes</div>
-              <div className='border-bottom p-4'>My Favorite Recipes</div>
-              <div className='p-4'>My Pantry</div>
+            <nav className='d-none d-md-flex col-2 flex-column border-right align-items-center text-center'>
+              <div className='p-4'>My Recipes</div><div style={{height:"1px", width:"25px", backgroundColor: "grey"}}></div>
+              <div className='p-4'>Public Recipes</div><div style={{height:"1px", width:"25px", backgroundColor: "grey"}}></div>
+              <div className='p-4'>Popular Recipes</div><div style={{height:"1px", width:"25px", backgroundColor: "grey"}}></div>
+              <div className='p-4'>My Favorite Recipes</div><div style={{height:"1px", width:"25px", backgroundColor: "grey"}}></div>
+              <div className='p-4'>My Pantry</div><div style={{height:"1px", width:"25px", backgroundColor: "grey"}}></div>
             </nav>
 
-            <div className='col-9'>
+            <div className='col m-4'>
               <div className='justify-content-between'>
-                <top className='row'>
-                  <div className='col-2'>My Recipes</div>
-                  <div className='divider-bar col-8'></div>
-                  <div className='col-2'>View All ></div>
-                </top>
+                  <div className='row d-flex align-items-center'>
+                    <div className='m-2'>All Recipes</div>
+                    <div className='divider-bar flex-grow-1' style={{height:"1px", backgroundColor:"grey"}}></div>
+                    <div className='m-2'>View All ></div>
+                  </div>
+                  <ul className='d-flex list-unstyled flex-wrap'>
+                    {recipes}
+                  </ul>
+                </div>
+              <div className='justify-content-between'>
+                <div className='row d-flex align-items-center'>
+                  <div className='m-2'>My Recipes</div>
+                  <div className='divider-bar flex-grow-1' style={{height:"1px", backgroundColor:"grey"}}></div>
+                  <div className='m-2'>View All ></div>
+                </div>
                 <ul className='d-flex list-unstyled flex-wrap'>
-                  {recipes}
+                  {my_recipes}
                 </ul>
               </div>
-              <div>Public Recipes</div>
-              {/* <div>Popular Recipes</div> */}
-              <div>My Favorite Recipes</div>
-              {/* <div>My Pantry</div> */}
+              <div className='justify-content-between'>
+                <div className='row d-flex align-items-center'>
+                  <div className='m-2'>Public Recipes</div>
+                  <div className='divider-bar flex-grow-1' style={{height:"1px", backgroundColor:"grey"}}></div>
+                  <div className='m-2'>View All ></div>
+                </div>
+                <ul className='d-flex list-unstyled flex-wrap'>
+                  {public_recipes}
+                </ul>
+              </div>
+              <div className='justify-content-between'>
+                <div className='row d-flex align-items-center'>
+                  <div className='m-2'>Popular Recipes</div>
+                  <div className='divider-bar flex-grow-1' style={{height:"1px", backgroundColor:"grey"}}></div>
+                  <div className='m-2'>View All ></div>
+                </div>
+                <ul className='d-flex list-unstyled flex-wrap'>
+                  {popular_recipes}
+                </ul>
+              </div>
+              <div className='justify-content-between'>
+                <div className='row d-flex align-items-center'>
+                  <div className='m-2'>My Favorite Recipes</div>
+                  <div className='divider-bar flex-grow-1' style={{height:"1px", backgroundColor:"grey"}}></div>
+                  <div className='m-2'>View All ></div>
+                </div>
+                <ul className='d-flex list-unstyled flex-wrap'>
+                  {favorite_recipes}
+                </ul>
+              </div>              
             </div>
           </div>
         </div>
