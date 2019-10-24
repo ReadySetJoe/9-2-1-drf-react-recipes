@@ -12,7 +12,6 @@ class App extends React.Component {
     super(props);
     this.state = {
       recipes: [],
-      // username: '',
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -26,10 +25,6 @@ class App extends React.Component {
     })
     .catch(error => {
       console.log(error)
-    })
-    axios.get('/api/v1/user/')
-    .then(res => {
-      localStorage.setItem({'key': res.data})
     })
   }
 
