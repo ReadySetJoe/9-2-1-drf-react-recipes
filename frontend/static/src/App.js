@@ -47,7 +47,7 @@ class App extends React.Component {
       console.log(res)
       let recipes = [...this.state.recipes]
       let ndx = recipes.indexOf(recipe)
-      recipes = recipes.splice(ndx) 
+      recipes = recipes.splice(ndx,1) 
       this.setState({recipes})
     })
     .catch(error => {
