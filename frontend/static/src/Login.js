@@ -12,7 +12,6 @@ class Login extends React.Component {
     this.state = {
       username: '',
       password: '',
-      loggedIn: false,
       showLogin: false,
     };
 
@@ -33,9 +32,12 @@ class Login extends React.Component {
 
     axios.post('api/v1/rest-auth/login/', user)
     .then(res => {
-      console.log(res);
-      localStorage.setItem('my-app-key',res.data);
-      this.setState({loggedIn: true, showLogin: false})
+      localStorage.setItem('user', JSON.stringify(user))
+      localStorage.setItem('my-app-key', JSON.stringify(res.data));
+      this.setState({showLogin: false})
+      console.log(localStorage);
+      console.log(this.state);
+      window.location.reload()
     })
     .catch(error => {
       console.log(error)
@@ -60,11 +62,12 @@ class Login extends React.Component {
   }
 
   handleShowLogin(e) {
-    if (this.state.loggedIn) {
+    if (localStorage.getItem('user')) {
       axios.post('api/v1/rest-auth/logout/')
       .then(res => {
         localStorage.removeItem('my-app-key')
-        this.setState({loggedIn: false})
+        localStorage.removeItem('user')
+        window.location.reload()
       })
       .catch(error => {
         console.log(error)
@@ -112,7 +115,7 @@ class Login extends React.Component {
     }    
     return (
       <>
-      <button onClick={this.handleShowLogin} className="logon-btn">{this.state.loggedIn ? "Logout" : "Login"}</button>
+      <button onClick={this.handleShowLogin} className="logon-btn">{localStorage.getItem('user') ? "Logout" : "Login"}</button>
       {modal}
       </>
     )

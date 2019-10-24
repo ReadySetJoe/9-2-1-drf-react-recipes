@@ -81,7 +81,7 @@ class App extends React.Component {
 
           <header className='border-bottom'>
             <div className='container-fluid d-flex justify-content-between align-items-center'>
-              <i>The kitchen is yours, {`chef`}!</i>
+              <i>The kitchen is yours, {`chef${localStorage.getItem('user') ? ' '.concat(JSON.parse(localStorage.user).username) : ''}`}!</i>
               <a href="/"><h1 className='text-uppercase'>Batch Maker</h1></a>
               <div className='user-actions'>
                 <li><Create width="25" height="25"/></li>
