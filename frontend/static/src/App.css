@@ -2,6 +2,10 @@
   box-sizing: border-box;
 }
 
+p, div {
+  font-size: 16;
+}
+
 header {
   font-size: calc(10px + 2vmin)
 }

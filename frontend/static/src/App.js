@@ -56,7 +56,7 @@ class App extends React.Component {
       <li key={recipe.id} className='recipe-li m-2'>
         {/* <p>{recipe.title}</p> by <p>{recipe.created_by}</p><br/> */}
         <div className='recipe-img' style={{backgroundImage: `url(${recipe.image})`}}>
-          <Create/>
+          <Create width="50" height="50"/>
         </div>
         <button onClick={() => this.handleDelete(recipe)} className='del-btn'>x</button>
       </li>
@@ -78,8 +78,7 @@ class App extends React.Component {
 
         <div className='container'>
           <div className='row'>
-            <nav className='d-none d-md-flex col-3 flex-column border-right align-items-center justify-content-around '>
-              
+            <nav className='d-none d-md-flex col-3 flex-column border-right align-items-center justify-content-around'>
               <div className='border-bottom p-4'>Public Recipes</div>
               <div className='border-bottom p-4'>Popular Recipes</div>
               <div className='border-bottom p-4'>My Favorite Recipes</div>
@@ -87,7 +86,12 @@ class App extends React.Component {
             </nav>
 
             <div className='col-9'>
-              <div>My Recipes
+              <div className='justify-content-between'>
+                <top className='row'>
+                  <div className='col-2'>My Recipes</div>
+                  <div className='divider-bar col-8'></div>
+                  <div className='col-2'>View All ></div>
+                </top>
                 <ul className='d-flex list-unstyled flex-wrap'>
                   {recipes}
                 </ul>
@@ -96,7 +100,6 @@ class App extends React.Component {
               {/* <div>Popular Recipes</div> */}
               <div>My Favorite Recipes</div>
               {/* <div>My Pantry</div> */}
-
             </div>
           </div>
         </div>
