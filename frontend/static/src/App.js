@@ -20,7 +20,6 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    localStorage.setItem('my-app-key',null);
     axios.get('/api/v1/recipes/')
     .then(res => {
       this.setState({recipes:res.data});
@@ -28,12 +27,9 @@ class App extends React.Component {
     .catch(error => {
       console.log(error)
     })
-    axios.get('/api/v1/rest-auth/user/')
+    axios.get('/api/v1/user/')
     .then(res => {
-      this.setState({username:res.username});
-    })
-    .catch(error => {
-      console.log(error)
+      localStorage.setItem({'key': res.data})
     })
   }
 
@@ -44,10 +40,9 @@ class App extends React.Component {
   handleDelete(recipe) {
     axios.delete(`/api/v1/recipes/${recipe.id}/`)
     .then(res => {
-      console.log(res)
       let recipes = [...this.state.recipes]
       let ndx = recipes.indexOf(recipe)
-      recipes = recipes.splice(ndx,1) 
+      recipes.splice(ndx,1) 
       this.setState({recipes})
     })
     .catch(error => {
@@ -58,39 +53,42 @@ class App extends React.Component {
 
   render() {
     let recipes = this.state.recipes.map(recipe => (
-      <li key={recipe.id} className='recipe-li'>
-        <p>{recipe.title}</p> by <p>{recipe.created_by}</p><br/>
-        <img src={recipe.image} alt={recipe.title} width="200" className='recipe-img'/>
+      <li key={recipe.id} className='recipe-li m-2'>
+        {/* <p>{recipe.title}</p> by <p>{recipe.created_by}</p><br/> */}
+        <div className='recipe-img' style={{backgroundImage: `url(${recipe.image})`}}>
+          <Create/>
+        </div>
         <button onClick={() => this.handleDelete(recipe)} className='del-btn'>x</button>
       </li>
     ));
+
     return (
       <React.Fragment>
 
-          <header className='d-flex justify-content-between align-items-center border-bottom'>
-            <i>The kitchen is yours, chef!</i>
-            {/* <i>The kitchen is yours, chef{' '.concat(this.state.username)}!</i> */}
-            <a href="/"><h1 className='text-uppercase'>Batch Maker</h1></a>
+          <header className='border-bottom'>
+            <div className='container-fluid d-flex justify-content-between align-items-center'>
+              <i>The kitchen is yours, {`chef`}!</i>
+              <a href="/"><h1 className='text-uppercase'>Batch Maker</h1></a>
               <div className='user-actions'>
-                <li><Create/></li>
+                <li><Create width="25" height="25"/></li>
                 <li><Login/></li>
               </div>
+            </div>
           </header>
 
         <div className='container'>
           <div className='row'>
-
-            <nav className='d-none d-md-flex col-3 flex-column border-right'>
-              <div>My Recipes</div>
-              <div>Public Recipes</div>
-              {/* <div>Popular Recipes</div> */}
-              <div>My Favorite Recipes</div>
-              {/* <div>My Pantry</div> */}
+            <nav className='d-none d-md-flex col-3 flex-column border-right align-items-center justify-content-around '>
+              
+              <div className='border-bottom p-4'>Public Recipes</div>
+              <div className='border-bottom p-4'>Popular Recipes</div>
+              <div className='border-bottom p-4'>My Favorite Recipes</div>
+              <div className='p-4'>My Pantry</div>
             </nav>
 
             <div className='col-9'>
               <div>My Recipes
-                <ul>
+                <ul className='d-flex list-unstyled flex-wrap'>
                   {recipes}
                 </ul>
               </div>

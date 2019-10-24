@@ -35,7 +35,7 @@ class Recipe(models.Model):
     cook_time = models.DurationField(default=timedelta())
     cook_temp = models.IntegerField(default=0)
     cook_temp_unit = models.CharField(max_length=11, choices=COOK_TEMP_UNIT_CHOICES, default=FAHRENHEIT)
-    notes = models.CharField(max_length=300, default=' ')
+    notes = models.CharField(max_length=300, default=' ', blank=True)
 
     def __str__(self):
         return self.title
@@ -44,5 +44,5 @@ class Recipe(models.Model):
         return self.profiles.count() > 5
 
     def save_model(self, request, obj, form, change):
-        obj.added_by = request.user
+        obj.created_by = request.user
         super().save_model(request, obj, form, change)

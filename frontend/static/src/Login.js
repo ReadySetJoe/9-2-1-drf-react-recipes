@@ -34,7 +34,7 @@ class Login extends React.Component {
     axios.post('api/v1/rest-auth/login/', user)
     .then(res => {
       console.log(res);
-      localStorage.setItem('my-app-key',res.data.key);
+      localStorage.setItem('my-app-key',res.data);
       this.setState({loggedIn: true, showLogin: false})
     })
     .catch(error => {
@@ -63,7 +63,7 @@ class Login extends React.Component {
     if (this.state.loggedIn) {
       axios.post('api/v1/rest-auth/logout/')
       .then(res => {
-        localStorage.setItem('my-app-key',null);
+        localStorage.removeItem('my-app-key')
         this.setState({loggedIn: false})
       })
       .catch(error => {
