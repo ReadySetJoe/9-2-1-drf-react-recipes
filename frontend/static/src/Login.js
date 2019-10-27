@@ -77,6 +77,10 @@ class Login extends React.Component {
     }
   }
 
+  // handleForgottenPassword(e) {
+  //   axios.post
+  // }
+
   handleHideLogin(e) {
     this.setState({showLogin: false})
   }
@@ -86,29 +90,29 @@ class Login extends React.Component {
     if (this.state.showLogin) {
       modal = 
         <div className={this.state.showLogin ? "modal-selected" : "modal"}>
-          <form className="modal-content animate" onSubmit={this.handleLoginSubmit} method="post">
+          <form className="modal-content animate p-3" onSubmit={this.handleLoginSubmit} method="post">
             <div className="imgcontainer">
               <span onClick={this.handleHideLogin} className="close" title="Close Modal">&times;</span>
             </div>
+            
 
-            <div className="container">
-              <label htmlFor="username"><b>Username</b></label>
-              <input onChange={this.handleChange} type="text" placeholder="Enter Username" name="username" required/>
+            <div className="m-auto">
+              <label htmlFor="username"><b>Username:</b></label>
+              <input className="m-2 w-100" onChange={this.handleChange} type="text" placeholder="Enter Username" name="username" required/><br/>
 
-              <label htmlFor="password"><b>Password</b></label>
-              <input onChange={this.handleChange} type="password" placeholder="Enter Password" name="password" required/>
+              <label htmlFor="password"><b>Password:</b></label>
+              <input className="m-2 w-100" onChange={this.handleChange} type="password" placeholder="Enter Password" name="password" required/><br/>
 
-              <button type="submit">Login</button>
-              <button type="button" onClick={() => (this.handleSignUp)}>Sign Up</button>
-              
-              <label>
-                <input onChange={this.handleChange} type="checkbox" name="remember"/> Remember me
+              <button className="m-2 w-100 loginbtn" type="submit">Login</button>
+              <button className="m-2 w-100 signupbtn" type="button" onClick={() => (this.handleSignUp)}>Sign Up</button>
+              <span className="m-2 float-left psw"><button onClick={this.handleForgottenPassword}>Forgot password?</button></span>
+              <label className='float-right'>
+                <input className="m-1" onChange={this.handleChange} type="checkbox" name="remember"/> Remember me
               </label>
             </div>
 
-            <div className="container" style={{backgroundColor:'#f1f1f1'}}>
+            <div className="m-auto">
               <button type="button" onClick={this.handleHideLogin} className="cancelbtn">Cancel</button>
-              <span className="psw">Forgot <a href="/accounts/password_reset">password?</a></span>
             </div>
           </form>
         </div>

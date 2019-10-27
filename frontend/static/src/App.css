@@ -24,6 +24,16 @@ header {
   font-family: 'Courier New', Courier, monospace;
 }
 
+.fav-btn {
+  position: absolute;
+  bottom: 5%;
+  right: 5%;
+  border: none;
+  background: whitesmoke;
+  border-radius: 50%;
+  font-family: 'Courier New', Courier, monospace;
+}
+
 button {
   opacity: 1;
   transition: 0.5s;

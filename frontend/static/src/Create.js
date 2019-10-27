@@ -13,7 +13,7 @@ class Create extends React.Component {
       title: 'test1',
       image: null,
       created_by: null,
-      private: 'off',
+      private: false,
       type: 'Anytime',
       prep_time: '00:00',
       cook_time: '00:00',
@@ -30,22 +30,32 @@ class Create extends React.Component {
     this.handleShowCreate = this.handleShowCreate.bind(this);
     this.handleHideCreate = this.handleHideCreate.bind(this);
     this.handleImageChange = this.handleImageChange.bind(this);
+    this.handleCheckBoxChange = this.handleCheckBoxChange.bind(this);
+    
   }
 
   handleSubmit(e) {
     e.preventDefault();
+    axios.get('/api/v1/rest-auth/user/', localStorage.getItem('username'))
+    .then(res => {
+      localStorage.setItem('user_id', JSON.stringify(res.data.pk))
+    })
+    .catch(error => {
+      console.log(error)
+    })
 
     let formData = new FormData();
     formData.append('title', this.state.title);
     formData.append('image', this.state.image);
-    formData.append('created_by', null);
-    formData.append('private', this.state.private === 'on' ? true : false);
-    formData.append('type', this.state.type);
+    formData.append('created_by', localStorage.getItem('user_id') ? localStorage.getItem('user_id') : null);
+    formData.append('private', this.state.private);
+    formData.append('type', this.state.type); // ==='on' ? true : false
     formData.append('prep_time', this.state.prep_time);
     formData.append('cook_time', this.state.cook_time);
     formData.append('cook_temp', this.state.cook_temp);
     formData.append('cook_temp_unit', this.state.cook_temp_unit);
     formData.append('notes', this.state.notes);
+    localStorage.setItem('formData',formData)
     console.log(formData)
 
     axios.post('/api/v1/recipes/', formData, {
@@ -80,12 +90,7 @@ class Create extends React.Component {
   }
 
   handleCheckBoxChange(e) {
-    if (e.target.checked === 'on') {
-      this.setState({[e.target.name]: true})
-    } else {
-      this.setState({[e.target.name]: false})
-    }
-    
+    this.setState({[e.target.name]: !e.target.checked})
   }
 
   handleImageChange(e) {
@@ -103,6 +108,7 @@ class Create extends React.Component {
 
   handleShowCreate(e) {
     this.setState({showCreate: true})
+    console.log(this.state)
   }
 
   handleHideCreate(e) {
@@ -114,7 +120,7 @@ class Create extends React.Component {
     if (this.state.showCreate) {
       create = 
         <div className={this.state.showCreate ? "create-selected" : "create"}>
-          <form  className="create-content animate" onSubmit={() => (this.handleSubmit)}>
+          <form  className="create-content animate" onSubmit={this.handleSubmit}>
             <div className="imgcontainer">
               <span onClick={this.handleHideCreate} className="close" title="Close Create">&times;</span>
             </div>
@@ -130,19 +136,19 @@ class Create extends React.Component {
                 null
               )}
               <br/>
-              Make Recipe Private: <input type="checkbox" name='private'/>
+              Make Recipe Private: <input type="checkbox" name='private' value={this.state.private} onChange={this.handleCheckBoxChange}/>
               <br/>
-              Recipe Type:<select name='type'>
+              Recipe Type:<select name='type' value={this.state.type} onChange={this.handleChange}>
                 <option value='Anytime'>Anytime</option>
                 <option value='Breakfast'>Breakfast</option>
                 <option value='Lunch'>Lunch</option>
                 <option value='Dinner'>Dinner</option>
               </select>
               <br/>
-              Prep Time: <input type="text" name="prep_time" pattern="[0-9]{2}:[0-9]{2}" placeholder='00:00'></input>
-              Cook Time: <input type="text" name="cook_time" pattern="[0-9]{2}:[0-9]{2}" placeholder='00:00'></input>
-              Cooking Temp: <input type="number" name="cook_temp" min="0" max="999" step="5"/>
-              <select name='cook_temp_unit'>
+              Prep Time: <input type="text" name="prep_time" pattern="[0-9]{2}:[0-9]{2}" placeholder='00:00' value={this.state.prep_time} onChange={this.handleChange}></input>
+              Cook Time: <input type="text" name="cook_time" pattern="[0-9]{2}:[0-9]{2}" placeholder='00:00' value={this.state.cook_time} onChange={this.handleChange}></input>
+              Cooking Temp: <input type="number" name="cook_temp" min="0" max="999" step="5" value={this.state.cook_temp} onChange={this.handleChange}/>
+              <select name='cook_temp_unit' value={this.state.cook_temp_unit} onChange={this.handleChange}>
                 <option value='Fahrenheit'>F</option>
                 <option value='Celsius'>C</option>
               </select>
@@ -151,8 +157,6 @@ class Create extends React.Component {
               <br/><br/>
               <button type="submit">Finish!</button>
             </div>
-            
-            
           </form>
         </div>
     }    

@@ -43,9 +43,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
     'rest_auth.registration',
 
     # local
@@ -58,8 +55,8 @@ INSTALLED_APPS = [
 # Endpoint access default is authenticated user
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        # 'rest_framework.permissions.AllowAny',
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
+        # 'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',

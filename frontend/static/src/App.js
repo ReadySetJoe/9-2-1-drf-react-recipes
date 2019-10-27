@@ -45,6 +45,18 @@ class App extends React.Component {
     })
   }
 
+  handleFavorite(recipe) {
+    axios.get('/api/v1/rest-auth/user', JSON.parse(localStorage.getItem('user')).username)
+    .then(res => {
+      recipe.users.add(res.data)
+      console.log(recipe.users)
+    })
+    .catch(error => {
+      console.log(error)
+    })
+    
+  }
+
   makeRow(recipes) {
     return recipes.map(recipe => (
       <li key={recipe.id} className='recipe-li m-2'>
@@ -53,6 +65,7 @@ class App extends React.Component {
           <Create width="50" height="50"/>
         </div>
         <button onClick={() => this.handleDelete(recipe)} className='del-btn'>x</button>
+        <button onClick={() => this.handleFavorite(recipe)} className='fav-btn'>♥︎</button>
       </li>
     ));
   }
@@ -60,7 +73,7 @@ class App extends React.Component {
 
   render() {
     let recipes = [...this.state.recipes]
-    let my_recipes = [...this.state.recipes].filter(recipe => recipe) // still need to implement 'custom auth token'
+    let my_recipes = [...this.state.recipes].filter(recipe => recipe.created_by == localStorage.getItem('user_id'))
     let public_recipes = [...this.state.recipes].filter(recipe => !recipe.private)
     let popular_recipes = [...this.state.recipes].filter(recipe => recipe) // still need to implement 'favorites list'
     let favorite_recipes = [...this.state.recipes].filter(recipe => recipe) // still need to implement 'favorites list'

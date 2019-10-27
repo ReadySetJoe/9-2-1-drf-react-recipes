@@ -3,6 +3,8 @@ from django.db import models
 
 from datetime import timedelta
 
+from accounts.models import Profile
+
 User = get_user_model()
 
 
@@ -37,11 +39,13 @@ class Recipe(models.Model):
     cook_temp_unit = models.CharField(max_length=11, choices=COOK_TEMP_UNIT_CHOICES, default=FAHRENHEIT)
     notes = models.CharField(max_length=300, default=' ', blank=True)
 
+    user_favorites = models.ManyToManyField(Profile)
+
     def __str__(self):
         return self.title
 
     def is_popular(self):
-        return self.profiles.count() > 5
+        return self.user_favorites.count() > 5
 
     def save_model(self, request, obj, form, change):
         obj.created_by = request.user
